@@ -75,3 +75,62 @@ $('#multiple-states').select2({
 });
 
 
+$('#passwordForm').submit(function (event) {
+	event.preventDefault();
+	var old_password = $('#old_password').val();
+	var new_password = $('#new_password').val();
+	var confirm_password = $('#confirm_password').val();
+
+	if (new_password != confirm_password) {
+
+		Swal.fire('Oppss','Password Baru dan konfirmasi password tidak sama','info');
+          // alert('New password and confirm password does not match');
+          return false;
+      }
+      document.getElementById("passwordForm").submit();
+
+  });
+
+function summernote(){
+	$('.summernote').summernote({
+		placeholder: 'Jawaban anda ...',
+		toolbar: [
+		['style', ['bold', 'italic', 'underline', 'clear']],
+		['fontsize', ['fontsize']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['height', ['height']]
+		],
+		tabsize: 2,
+		height: 250
+	});
+}
+
+
+dropzone()
+function dropzone(){
+	Dropzone.options.dropzoneFrom = {
+		autoProcessQueue: false,
+		acceptedFiles:".png,.jpg,.gif,.bmp,.jpeg",
+		addRemoveLinks: true,
+		paramName: 'file',
+
+
+		init: function(){
+			var submitButton = document.querySelector('#submit-all');
+			myDropzone = this;
+			submitButton.addEventListener("click", function(){
+				myDropzone.processQueue();
+			});
+			this.on("complete", function(){
+				if(this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0)
+				{
+					var _this = this;
+					_this.removeAllFiles();
+				}
+			});
+		},
+	};
+}
+
+
+

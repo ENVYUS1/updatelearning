@@ -21,14 +21,16 @@ class RedirectIfAuthenticated
 
             $userRole= \Auth::user()->role->role_id;
 
-            if($userRole == '2')
+            if($userRole == '1')
             {
                 return redirect('/jurusan');
-            }
+            }elseif ($userRole == '2') {
+               return redirect('/grupkelas');
+           }
 
-            return redirect('/');
-        }
+           return redirect('/');
+       }
 
-        return $next($request);
-    }
+       return $next($request);
+   }
 }

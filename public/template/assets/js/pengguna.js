@@ -46,6 +46,7 @@ $(document).on("submit", "#form-pengguna", function(e){
         data : new FormData(this),
         processData : false,
         contentType : false,
+        timer: 10000,
         success : function(resp)
         {
 

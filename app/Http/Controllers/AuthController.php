@@ -6,8 +6,18 @@ use Illuminate\Http\Request;
 
 use App\User;
 
+use Illuminate\Support\Facades\Hash;
+
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
 class AuthController extends Controller
 {
+ use  AuthenticatesUsers;
+
+protected $maxAttmpts=2;
+
+protected $decayMinutes=5;
+
 
     public function showLogin()
     {
@@ -21,10 +31,14 @@ class AuthController extends Controller
         $user = User::where('email', $email)->first();
         if ($user) {
 
-            if (\Auth::attempt(['email' => $email, 'password' => $password])) {
+            if (\Auth::attempt(['email' => $email, 'password' => $password, 'id_role'=>1 ])) {
                 return redirect()->to('jurusan');
-            } else {
-                \Session::flash('class', 'alert-danger');
+            } elseif(\Auth::attempt(['email' => $email, 'password' => $password, 'id_role'=>2 ])) {
+               
+                 return redirect()->to('grupkelas');
+            }else{
+
+                 \Session::flash('class', 'alert-danger');
                 \Session::flash('message', 'Username dan password salah');
             }
         } else {
@@ -59,9 +73,9 @@ class AuthController extends Controller
         return view('hrms.auth.not_found');
     }
 
-    public function showRegister()
+    public function profil()
     {
-        return view('hrms.auth.register');
+        return view('profil.profil');
     }
 
     public function doRegister(Request $request)
@@ -79,25 +93,26 @@ class AuthController extends Controller
         return view('hrms.auth.change');
     }
 
-    public function processPasswordChange(Request $request)
+    public function ubah()
     {
-        $password = $request->old;
-        $user     = User::where('id', \Auth::user()->id)->first();
-
-
-        if (Hash::check($password, $user->password)) {
-            $user->password = bcrypt($request->new);
-            $user->save();
-            \Auth::logout();
-
-            return redirect()->to('/')->with('message', 'Password updated! LOGIN again with updated password.');
-        } else {
-            \Session::flash('flash_message', 'The supplied password does not matches with the one we have in records');
-
-            return redirect()->back();
-        }
+        return view('auth.ubah-password');
     }
 
+    public function Change(Request $request)
+{
+  $password = $request->lama;
+  $user     = User::where('id', \Auth::user()->id)->first();
+  if (Hash::check($password, $user->password)) {
+    $user->password = bcrypt($request->baru);
+    $user->save();
+    \Auth::logout();
+  return redirect()->to('/')->with('message', 'Password berhasil diubah! LOGIN kembali dangan password baru.');
+  } else {
+    \Alert::error('Gagal Ganti Password',' ganti password tidak berhasil');
+
+    return redirect()->back();
+  }
+}
     public function resetPassword()
     {
         return view('hrms.auth.reset');

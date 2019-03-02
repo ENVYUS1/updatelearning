@@ -36,12 +36,10 @@
 							<thead>
 								<tr class="active">
 									<th width="5%">No</th>
-									<th>Mahasiswa</th>
 									<th>Soal</th>
 									<th>Matakuliah</th>
 									<th>Keterangan</th>
 									<th>Waktu</th>
-									<th>Dosen</th>
 									<th>Token</th>
 									<th>Action</th>
 								</tr>

@@ -22,6 +22,9 @@ class Permission
             if($userRole == '1')
             {
                 return redirect('/jurusan');
+            }elseif($userRole == '2'){
+
+              return redirect('/grupkelas');
             }
         }
         return $next($request);

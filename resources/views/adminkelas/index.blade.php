@@ -57,7 +57,7 @@
 	<div class="modal-dialog modal-lg" kelas="document">
 		<div class="modal-content">
 			<div class="modal-header no-bd" >
-				<div class="card-title"><i class="fas fa-bullhorn"></i> Tambah Kelas</div>
+				<div class="card-title">Tambah Kelas</div>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -71,7 +71,7 @@
 						<div class="form-group form-show-validation row mt--2">
 							<label for="name" class="col-lg-3 col-md-3 col-sm-4 mt-sm-2 text-right">Matakuliah <span class="required-label">*</span></label>
 							<div class="col-lg-6 col-md-9 col-sm-12 select2-input">
-								<select name="id_matkul" class="form-control">
+								<select name="id_matkul" class="form-control"  id="basic" style="width: 100%">
 									@foreach($matkul as $matkuls)
 
 									<option value="{{$matkuls->id}}">{{$matkuls->kode_matkul}}--{{$matkuls->nama_matkul}}</option>
@@ -85,7 +85,7 @@
 						<div class="form-group form-show-validation row">
 							<label for="name" class="col-lg-3 col-md-3 col-sm-4 mt-sm-2 text-right">Dosen<span class="required-label">*</span></label>
 							<div class="col-lg-6 col-md-12 col-sm-12">
-								<select  class="form-control" name="id_user" required="" style="width: 100%;">
+								<select  class="form-control" name="id_user" required="" style="width: 100%;"  id="basic">
 
 									@foreach($dosen as $dosens)
 
@@ -148,4 +148,9 @@
 		</div>
 	</div>
 </div>
+<!-- moal tambah mahsisw amasuk kelas -->
+
+@include('adminkelas.modal')
+
+
 @endsection

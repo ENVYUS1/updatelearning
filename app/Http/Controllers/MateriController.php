@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Materi;
 
-use Yajra\Datatables\Datatables;
+use Validator;
 
 class MateriController extends Controller
 {
@@ -17,25 +17,7 @@ class MateriController extends Controller
      */
     public function index()
     {
-        return view('materi.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $data=Materi::orderBy('id', 'desc')->get();
-
-        return Datatables::of($data)->addIndexColumn()->addColumn('action', function ($id){
-
-            return '<a href="#" class="btn btn-xs btn-primary  edit-matkul"  did="'.$id->id.'"><i class="fa fa-pencil"></i> Edit</a>'
-            ." ".
-            '<a href="#" class="btn btn-xs btn-danger  hapus-matkul" did="'.$id->id.'">Hapus</a>';
-
-        })->make(true);
+        //
     }
 
     /**
@@ -46,62 +28,117 @@ class MateriController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $validator = Validator::make($request->all(), [
+            'aksi' => 'required',
+            'nama' => 'required',
+            'keterangan' => 'required',
+            'url' => 'nullable',
+            'file' => 'nullable|mimes:pdf,doc|max:200000',
+            'id_materi' => 'nullable|required'
+        ]);
 
-        if($request->input('aksi')==0) {
-
-            $id=$request->input('id_matkul');
-
-            $result=Matkul::where('id',$id)->update(
-                ['nama_matkul'=> $request->get('nama'),'keterangan'=> $request->get('keterangan')]);
-
-            if($result){
-                exit (json_encode(array('Sukses', 'Update Data berhasil', 'success')));
-            }else{
-                exit(json_encode(array('Ups', 'Update Data tidak berhasil', 'error')));
-
-            }
-
-        }elseif($request->input('aksi')==1) {
-            
-         $result= Matkul::create(['nama_matkul'=> $request->get('nama'),'keterangan'=> $request->get('keterangan')]);
-
-         if($result){
-            exit(json_encode(array('Sukses', 'Tambah Data <b>'.$request->get('nama').'</b> berhasil ', 'success')));
-        }else{
-            exit(json_encode(array('Ups', 'Tambah Data tidak berhasil', 'error')));
-
+        if ($validator->fails()) {
+            return json_encode(array('Hmm...', 'Anda dilarang otak atik form', 'error'));
         }
 
+        if($request["aksi"] == 1) // tambah
+        {
+            if($request->has('url'))
+            {
+                $save = Materi::create([
+                    'nama_materi'=> $request->get('nama'),
+                    'url'=> $request->get('url'),
+                    'keterangan_materi'=> $request->get('keterangan'),
+                    'id_kelas'=> $request->get('id_kelas')
+                ]);
+
+                $array = array('url'=> $request->get('url'), 'opsi'=>'url');
+            }
+            elseif ($request->hasfile('file')) 
+            {
+                $file = $request->file('file');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() .'.'. $extension;
+                $file->move('template/assets/materi/', $filename);
+
+                $save = Materi::create([
+                    'nama_materi'=> $request->get('nama'),
+                    'nama_file'=> $filename,
+                    'keterangan_materi'=> $request->get('keterangan'),
+                    'id_kelas'=> $request->get('id_kelas')
+                ]);
+
+                $array = array('url'=> $filename, 'opsi'=>'file');
+            }
+
+            $id = Materi::latest()->first();
+
+            if($save){
+                $output = array(
+                            'sts' => 1,
+                            'id' => $id->id,
+                            'nama' => $request->get('nama'),
+                            'keterangan' => $request->get('keterangan'),
+                            'create' => get_time_difference_php($id->created_at),
+                            'message'=> ['Sukses', 'Tambah materi berhasil', 'success']
+                        );
+                $output = array_merge($output, $array);
+                exit(json_encode($output));
+            }else{
+                return json_encode(array('sts' => 2, 'message'=>['Ups', 'Simpan materi tidak berhasil', 'error']));
+            }
+
+        }
+        else if($request["aksi"] == 2) // edit
+        {
+            $id = $request->input('id_materi');
+
+            if($request->has('url'))
+            {
+                $save = Materi::where('id',$id)->update([
+                    'nama_materi'=> $request->get('nama'),
+                    'url'=> $request->get('url'),
+                    'keterangan_materi'=> $request->get('keterangan')
+                ]);
+
+                $array = array('url'=> $request->get('url'), 'opsi'=>'url');
+            }
+            elseif ($request->hasfile('file')) 
+            {
+                $file = $request->file('file');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() .'.'. $extension;
+                $file->move('template/assets/materi/', $filename);
+
+                $save = Materi::where('id', $id)->update([
+                    'nama_materi'=> $request->get('nama'),
+                    'nama_file'=> $filename,
+                    'keterangan_materi'=> $request->get('keterangan')
+                ]);
+
+                $array = array('url'=> $filename, 'opsi'=>'file');
+            }
+
+            if($save){
+                $output = array(
+                            'sts' => 1,
+                            'nama' => $request->get('nama'),
+                            'keterangan' => $request->get('keterangan'),
+                            
+                            'message'=> ['Sukses', 'Tambah materi berhasil', 'success']
+                        );
+                $output = array_merge($output, $array);
+                exit(json_encode($output));
+            }else{
+                return json_encode(array('sts' => 2, 'message'=>['Ups', 'Simpan materi tidak berhasil', 'error']));
+            }
+        }
+        else
+        {
+            return json_encode(array('sts' => 0, 'message'=>['Ups', 'Ada yang salah pada saat pengiriman data', 'error']));
+        }
     }
 
-}
-
-if ($request->has('json_matkul')){
-
-    $id=$request->get('json_matkul');
-
-    $edit =Matkul::where('id', $id)->get();
-
-    return (json_encode($edit));
-}
-
-if ($request->has('hapus_matkul')) {
-
-    $id=$request->get('hapus_matkul');
-
-    $data=Matkul::where('id',$id)->first();
-
-    $result=Matkul::where('id',$id)->delete();
-
-    if($result){
-        exit(json_encode(array('Sukses', ' Hapus nama  matkul <b>'.$data->nama_matkul.'</b> berhasil', 'success')));
-    }else{
-        exit(json_encode(array('Ups', 'Hapus nama  matkul <b>'.$data->nama_matkul.'</b>  tidak berhasil', 'error')));
-    }
-
-}
-}
 
     /**
      * Display the specified resource.
@@ -109,88 +146,24 @@ if ($request->has('hapus_matkul')) {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
-    }
+        if ($request->has('json_materi')){
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+            $id = $request->get('json_materi');
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+            $data = Materi::where('id',$id)->first();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-}
+            if($data->nama_file != NULL && $data->url != NULL){
+                $opsi = 1; // lengkap
+            }elseif ($data->nama_file == NULL) {
+                $opsi = 2; // file
+            }else{
+                $opsi = 3; // video
+            }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+            return (json_encode(array('data'=>$data, 'opsi'=>$opsi)));
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        }
     }
 }

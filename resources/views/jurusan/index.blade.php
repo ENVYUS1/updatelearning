@@ -54,8 +54,8 @@
 	<div class="modal" id="modal-jurusan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
-					<div class="card-title"><i class="fas fa-bullhorn"></i> Tambah jurusan</div>
+				<div class="modal-header no-bd">
+					<div class="card-title">Tambah jurusan</div>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -73,7 +73,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="modal-footer">
+					<div class="modal-footer no-bd">
 					<!-- 	<div class="loader loader-info"></div> -->
 						<button type="button" class="btn" data-dismiss="modal">Batal</button>
 						<button class="btn btn-primary">Simpan</button>

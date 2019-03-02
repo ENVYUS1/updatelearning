@@ -33,9 +33,9 @@ class JurusanController extends Controller
 
 		return Datatables::of($data)->addIndexColumn()->addColumn('action', function ($id){
 
-			return '<a href="#" class="btn btn-xs btn-primary  edit-jurusan"  did="'.$id->id.'"><i class="fa fa-pencil"></i> Edit</a>'
+			return '<a href="#" class="btn btn-xs btn-primary  edit-jurusan"  did="'.$id->id.'"><i class="fa fa-edit"></i>Edit</a>'
 			." ".
-			'<a href="#" class="btn btn-xs btn-danger  hapus-jurusan" did="'.$id->id.'">Hapus</a>';
+			'<a href="#" class="btn btn-xs btn-danger  hapus-jurusan" did="'.$id->id.'"><i class="fa fa-trash"></i> Hapus</a>';
 
 		})->make(true);
 

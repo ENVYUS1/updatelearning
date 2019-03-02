@@ -36,34 +36,16 @@ class SoalController extends Controller
     {
       // $data=Kelas::groupBy('kelas_id')->havingRaw('COUNT(*)')->get();
 
-    	$data=Kelas::get();
+    	$data=Soal::get();
 
     	return Datatables::of($data)->addIndexColumn()->addColumn('action', function ($id){
 
-    		return '<a href="#" class="btn btn-xs btn-primary  edit-kelas"  did="'.$id->id.'"><i class="fa fa-pencil"></i> Edit</a>'
+    		return '<a href="#" class="btn btn-xs btn-primary  edit-soal"  did="'.$id->id.'"><i class="fa fa-pencil"></i> Edit</a>'
     		." ".
-    		'<a href="#" class="btn btn-xs btn-danger  hapus-kelas" did="'.$id->id.'">Hapus</a>';
+    		'<a href="#" class="btn btn-xs btn-danger  hapus-soal" did="'.$id->id.'">Hapus</a>'." ". '<a href="#" class="btn btn-xs btn-danger  hapus-soal" did="'.$id->id.'">tambah mhs</a>';
 
     	})->addColumn('nama', function ($nama){
     		return  $nama->KelasUser['name'];
-    	})->addColumn('smt', function ($smt){
-    		if ($smt->semester==1) {
-    			return 'Satu';
-    		}elseif ($smt->semester==2) {
-    			return'Dua';
-    		}elseif ($smt->semester==3) {
-    			return'Tiga';
-    		}elseif ($smt->semester==4) {
-    			return'Empat';
-    		}elseif ($smt->semester==5) {
-    			return'Lima';
-    		}elseif ($smt->semester==6) {
-    			return'Enam';
-    		}elseif ($smt->semester==7) {
-    			return'Tujuh';
-    		}elseif($smt->semester==8)  {
-    			return'Delapan';
-    		}
     	})->addColumn('jadwal', function ($jadwal){
     		if ($jadwal->jadwal==01) {
     			return 'Pagi';
@@ -97,8 +79,8 @@ class SoalController extends Controller
     				'id_user'=> $request->get('id_user'),
     				'jadwal'=> $request->get('jadwal'),
     				'semester'=> $request->get('semester')
-
     			]);
+                
 
     			if($result){
     				exit (json_encode(array('Sukses', 'Update Data berhasil', 'success')));
@@ -204,48 +186,4 @@ class SoalController extends Controller
     	}
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

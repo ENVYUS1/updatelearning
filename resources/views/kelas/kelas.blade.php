@@ -1,111 +1,88 @@
 @extends('layout.layout')
 @section('content')
 
-<div class="page-inner page-inner-fill">
-	<div class="page-with-aside mail-wrapper bg-white">
-		<div class="page-aside bg-grey1">
-			<div class="aside-header">
-				<div class="title">LESSONS</div>
-				<a class="btn btn-primary toggle-email-nav" data-toggle="collapse" href="#email-app-nav" role="button" aria-expanded="false" aria-controls="email-nav">
-					<span class="btn-label">
-						<i class="icon-menu"></i>
-					</span>
-					Menu
-				</a>
-			</div>
-			<div class="aside-nav collapse" id="email-app-nav">
-				<ul class="nav">
-					<?php 
-						$no = 1;
-						for ($i=0; $i < 10 ; $i++) { 
-							echo '
-								<li>
-									<a href="#">
-										<b>'.$no++. '. NAMA MATERI</b> <i class="flaticon-right-arrow-4 ml-2"></i>';
-
-										if($i == 9){
-											echo '<span class="badge badge-danger float-right">i</span>';
-										}
-
-									echo '</a>
-								</li>
-							';
-						}
-					?>
+<div class="page-inner">
+	<div class="page-header">
+		<div>
+			<div class="page-header">
+				<h4 class="page-title">Kelas</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="#">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="/kelas">Kelas</a>
+					</li>
 				</ul>
-				<div class="aside-compose"><a href="#" class="btn btn-primary btn-block fw-mediumbold">Compose Email</a></div>
+			</div> 
+		</div>
+		<div class="ml-md-auto py-2 py-md-0">
+			<div class="input-group">
+				<input type="text" placeholder="Cari kelas" class="form-control">
+				<div class="input-group-append">
+					<span class="input-group-text">
+						<i class="fa fa-search search-icon"></i>
+					</span>
+				</div>
 			</div>
 		</div>
-		<div class="page-content mail-content bg-grey1">
-			<div class="inbox-head  d-block">
-				<p class="text-warning">NAMA MATERI</p>
-				<h3><b>LESSON 1</b> - INTRODUCTION</h3>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, pariatur quis autem aut corporis? Voluptate quisquam aspernatur, reprehenderit quaerat blanditiis, voluptates, tempore odit sunt earum cumque ducimus optio porro quae!</p>
-
-
-
-				<div class="row ">
-					<div class="col-sm-4 col-6">
-						<div class="card text-center">
-							<div class="card-body">
-								<h1><i class="fab fa-youtube display-1 text-danger"></i></h1>
-
-								<h5 class="op-8">Lorem ipsum dolor sit amet dolor sit amet</h5>
-							</div>
-						</div>
+	</div>
+	<div class="row">
+		@for($i = 0; $i < 3; $i++)
+		<div class="col-md-3">
+			<div class="card card-profile bubble-shadow full-height card-info">
+				<div class="card-header">
+					<div class="avatar avatar-xs mr-2">
+						<span class="avatar-title rounded-circle border bg-warning border-white"><i class="fas fa-chalkboard-teacher"></i></span>
 					</div>
-					<div class="col-sm-4 col-6">
-						<div class="card text-center">
-							<div class="card-body">
-								<h1><i class="fas fa-file-excel display-1 text-success"></i></h1>
-
-								<h5 class="op-8">Lorem ipsum dolor sit amet dolor sit amet</h5>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-4 col-6">
-						<div class="card text-center">
-							<div class="card-body">
-								<h1><i class="fas fa-file-powerpoint display-1 text-warning"></i></h1>
-
-								<h5 class="op-8">Lorem ipsum dolor sit amet dolor sit amet</h5>
-							</div>
+				</div>
+				<div class="card-body text-white mt--5">
+					<div class="user-profile text-center mt--5">
+						<div class="name fw-bold">REKAYASA PERANGKAT LUNAK</div>
+						<div class="job text-white">Pahri Khalid</div>
+						<div class="desc text-white">25/40 Mhs | Sore</div>
+						<div class="view-profile">
+							<a href="/kelas/informasi" class="btn btn-light btn-rounded text-info">Masuk Kelas</a>
 						</div>
 					</div>
 				</div>
-				
-				<div class="row mt-5">
-					<div class="col-sm-6 col-lg-6 mb-4">
-						<div class="d-flex align-items-center">
-							<span class="stamp stamp-md bg-grey1 mr-3" style="margin-top: -90px">
-								<h1><i class="icon-note text-warning"></i></h2>
-							</span>
-							<div>
-								<h5 class="mb-1"><b><a href="#">QUIZ</a></b></h5>
-								<small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta quam nisi odio iure incidunt, voluptatem quod enim tempore doloribus laborum. </small>
-								<div class="d-flex justify-content-between mt-2">
-									<button class="btn btn-round btn-border btn-sm  btn-warning">Take Quiz</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6 col-lg-6">
-						<div class="d-flex align-items-center">
-							<span class="stamp stamp-md bg-grey1 mr-3" style="margin-top: -90px">
-								<h1><i class="icon-note text-warning"></i></h2>
-							</span>
-							<div>
-								<h5 class="mb-1"><b><a href="#">QUIZ</a></b></h5>
-								<small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta quam nisi odio iure incidunt, voluptatem quod enim tempore doloribus laborum. </small>
-								<div class="d-flex justify-content-between mt-2">
-									<button class="btn btn-round btn-border btn-sm  btn-warning">Take Quiz</button>
-								</div>
-							</div>
-						</div>
-					</div>
+			</div>
+		</div>
+		@endfor		
+		<div class="col-md-3">
+			<div class="card card-profile full-height bg-grey1 card-add" onclick="modal_tambah_kelas()">
+				<div class="card-body text-center mt--3">
+					<i class="icon-plus text-success display-1"></i>
+					<p class="text-success fw-bold">TAMBAH KELAS</p>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_tambah_kelas" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header no-bd">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body text-center">
+				<h2>Silahkan masukkan <b>NO TOKEN</b> kelas</h2>
+			</div>
+			<div class="modal-footer no-bd">
+				<button type="button" class="btn btn-primary">Gabung</button>
+				<button type="button" class="btn" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 @endsection

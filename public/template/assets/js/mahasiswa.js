@@ -49,7 +49,6 @@ $(document).on("submit", "#form-mahasiswa", function(e){
         timeout : 10000,
         success : function(resp)
         {
-
             var json = JSON.parse(resp)
             $('button').prop('disabled', false)
             $('.loader').hide()

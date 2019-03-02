@@ -36,14 +36,14 @@ class PenggunaController extends Controller
     public function create()
     {   
 
-     return Datatables::of(User::query()->whereIn('id_role',['1','2','3'])->orderBy('id','desc')->get())->addIndexColumn()->addColumn('action', function ($data){
+       return Datatables::of(User::query()->whereIn('id_role',['1','2','3'])->orderBy('id','desc')->get())->addIndexColumn()->addColumn('action', function ($data){
         return '<a href="#" class="btn btn-xs btn-primary  edit-pengguna"  did="'.$data->pengguna['id'].'"><i class="fa fa-edit"></i>Edit</a>';  
     })->addColumn('status', function($data){
         return $data->role->role['name'];
     })->addColumn('nip', function($data){
         return $data->pengguna->no_induk;
     })->addColumn('name', function($data){
-     
+       
         return '<div class="avatar avatar-sm"><span class="avatar-title rounded-circle border border-white '.$data->color.'">'.substr($data->name,0,1).'</span></div>&nbsp;&nbsp;' .$data->pengguna['nama'];
     })->addColumn('email', function($data){
         return $data->pengguna['email'];
@@ -60,8 +60,8 @@ class PenggunaController extends Controller
      */
     public function store(Request $request)
     {
-     if($request->has('aksi'))
-     {
+       if($request->has('aksi'))
+       {
 
         if($request->input('aksi')==0) {
 
@@ -92,8 +92,8 @@ class PenggunaController extends Controller
         }elseif($request->input('aksi')==1) {
 
         //user
-           $count=User::where('email',$request->input('email'))->count();
-           if ($count>0) {
+         $count=User::where('email',$request->input('email'))->count();
+         if ($count>0) {
             exit(json_encode(array('Oppss', ' Email : <b>'.$request->input('email').'</b> sudah Terdaftar', 'info')));
         }
 
@@ -187,48 +187,4 @@ if ($request->has('hapus_pengguna')) {
 }
 }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

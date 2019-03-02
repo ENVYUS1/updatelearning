@@ -14,7 +14,6 @@ $.ajaxSetup({
 validasi('#form-soal')
 
 var table_soal = $('#tabel-soal').DataTable({
-
   processing: true,
   serverSide: true,
   ajax: {
@@ -27,7 +26,6 @@ var table_soal = $('#tabel-soal').DataTable({
   {data: 'nama',        name: 'nama'},
   {data: 'jadwal',      name: 'jadwal'},
   {data: 'smt',         name: 'ksmt'},
-  {data: 'Token',       name: 'Token'},
   {data: 'action',      name: 'action'},
   ],
 });

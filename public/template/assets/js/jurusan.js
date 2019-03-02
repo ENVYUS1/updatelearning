@@ -10,6 +10,8 @@ $.ajaxSetup({
   }
 });
 
+validasi('#form-jurusan')
+
 var table_jurusan = $('#tabel-jurusan').DataTable({
 
   processing: true,

@@ -1,6 +1,8 @@
   function modal_grupkelas(){
    $("input[name=aksi]").val(1)
    reset('#form-grupkelas')
+
+   $('#status').show();
    $('#title_grupkelas').text('Tambah Data')
    $("#modal-grupkelas").modal({ backdrop : 'static', keyboard : false})
  }
@@ -22,7 +24,8 @@ var table_grupkelas = $('#tabel-grupkelas').DataTable({
   {data: 'DT_RowIndex', name:'DT_RowIndex', orderable: true, searchable: false},
   {data: 'nama',     name: 'nama'},
   {data: 'matkul',     name: 'matkul'},
-  {data: 'action',     name: 'action'},
+  {data: 'matkul',     name: 'matkul'},
+  {data: 'action',     name: 'action'}
   ],
 });
 
@@ -77,15 +80,16 @@ var table_grupkelas = $('#tabel-grupkelas').DataTable({
       data : {json_grupkelas:id},
 
       success:function (resp) {
-   
+
         var json=JSON.parse(resp)
         $("input[name=aksi]").val(0)
-        $("select[name=mhs]").val(json[0].id_user)
-        $("select[name=matkul]").val(json[0].id_kelas)  
-        $("input[name=id_grupkelas]").val(json[0].id)
+        $("input[name=id_grupkelas]").val(json.data[0].id)
         $('#load').waitMe('hide')
         $('#title_grupkelas').text('Edit Grup Kelas')
-        // $('#token').remove()
+        $('#status').hide();
+        $('#status1').show();
+        $('#status1').html('data1');
+        $('#token').remove()
         $("#modal-grupkelas").modal({backdrop:'static', keyboard : false})
       }
     })

@@ -8,24 +8,23 @@ use Illuminate\Database\Eloquent\softDeletes;
 
 class GrubSoal extends Model
 {
-    use softDeletes;
-	
-    protected $table="tb_grub_soal";
+  use softDeletes;
 
-    protected $primerykey="id";
+  protected $table="tb_grub_soal";
 
-    protected $guarded=[];
-   
+  protected $primerykey="id";
 
-   public function GrubSoalKelas()
-   {
-   	
-     return $this->belongsTO(Kelas::class,'id_kelas','id')->withTrashed();
-   }
+  protected $guarded=[];
 
-     public function GrubSoalSoal()
-   {
-   	
-     return $this->belongsTO(Soal::class,'id_soal','id')->withTrashed();
-   }
+  public function GrubSoalKelas()
+  {
+
+   return $this->belongsTO(Kelas::class,'id_kelas','id')->withTrashed();
+ }
+
+ public function GrubSoalSoal()
+ {
+
+   return $this->hasMany(Soal::class,'id','id_grub_soal');
+ }
 }
